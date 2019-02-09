@@ -17,9 +17,8 @@ It also sends retained messages to another topic when the script starts and stop
 
 ## TODO
 
-- Complete README.md
-- Avoid code-injection on the payload
 - Options to set MQTT authentication
+- Options to set notification priority/level
 - More options to customize notification icon
 
 ## How to start?

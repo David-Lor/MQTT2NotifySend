@@ -30,11 +30,13 @@ def on_message(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
     else:
         title = DEFAULT_TITLE
         text = payload
-    subprocess.call("notify-send -i '{icon}' '{title}' '{text}'".format(
-        icon=ICON,
-        title=title,
-        text=text
-    ), shell=True)
+    subprocess.call((
+        "notify-send",
+        "-i",
+        ICON,
+        title,
+        text
+    ), shell=False)
 
 
 mqttClient = mqtt.Client()
