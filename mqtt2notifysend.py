@@ -44,9 +44,9 @@ ICON = os.path.join(CURRENT_DIR, "icon.png")
 
 
 def on_connect(mqtt_client: mqtt.Client, userdata, flags, rc):
-    mqtt_client.subscribe(TOPIC_SUB)
-    mqtt_client.publish(TOPIC_STAT, PAYLOAD_ON, retain=True)
-    mqttClient.will_set(TOPIC_STAT, PAYLOAD_OFF, retain=True)
+    mqtt_client.subscribe(TOPIC_SUB.format(client_name=CLIENT_NAME))
+    mqtt_client.publish(TOPIC_STAT.format(client_name=CLIENT_NAME), PAYLOAD_ON, retain=True)
+    mqttClient.will_set(TOPIC_STAT.format(client_name=CLIENT_NAME), PAYLOAD_OFF, retain=True)
     if USERNAME is not None and PASSWORD is not None:
         mqttClient.username_pw_set(USERNAME, PASSWORD)
 
