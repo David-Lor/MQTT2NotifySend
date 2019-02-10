@@ -4,25 +4,40 @@ import os
 import subprocess
 import paho.mqtt.client as mqtt
 
-# The CLIENT_NAME must be unique on the broker.
-# Set your username, your password and change the port to 8883
-# if you use an authenticated SSL/TLS connection with the broker.
 
-BROKER = "192.168.X.XXX"
+# BROKER must be the IP/Host where the MQTT Broker is running
+# Default MQTT port is 1883 (8883 for SSL/TLS enabled broker)
+BROKER = "127.0.0.1"
+PORT = 1883
+
+# The CLIENT_NAME must be unique on the broker.
 CLIENT_NAME = "your_computer_name"
+
+# Topics where to listen and publish messages
+# TOPIC_SUB is where the script will listen to messages, showing them as notifications on the desktop
+# TOPIC_STAT is where the script will publish the computer ON/OFF status
+# {client_name} is replaced by the CLIENT_NAME variable
+TOPIC_SUB = "dev/{client_name}/toast"
+TOPIC_STAT = "dev/{client_name}/stat"
+
+# The delimiter is used on incoming MQTT messages to split the notification title and text.
+# If no delimiter is provided, notification will show DEFAULT_TITLE as the title
+DELIMITER = ";;;"
+DEFAULT_TITLE = "MQTT"
+
+# Payloads are the message text to be sent through the TOPIC_STAT topic
+PAYLOAD_ON = "Online"
+PAYLOAD_OFF = "Offline"
+
+# If authentication is enabled on the broker, set your username and password
 USERNAME = None
 PASSWORD = None
+
+# Misc MQTT settings
 CLEAN_SESSION = True
 USER_DATA = None
 PROTOCOL = mqtt.MQTTv311
-TOPIC_SUB = "dev/"+CLIENT_NAME+"/toast"
-TOPIC_STAT = "dev/"+CLIENT_NAME+"/stat"
-PORT = 1883
 KEEPALIVE = 60
-PAYLOAD_ON = "Online"
-PAYLOAD_OFF = "Offline"
-DELIMITER = ";;;"
-DEFAULT_TITLE = "MQTT"
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 ICON = os.path.join(CURRENT_DIR, "icon.png")
