@@ -32,6 +32,12 @@ It also sends retained messages to another topic when the script starts and stop
 All options are available as variables on the Python script:
 
 - BROKER: the MQTT broker host
+- CLIENT NAME: the Client name on the broker (must be unique)
+- USERNAME: username for broker authentication
+- PASSWORD: password for broker authentication
+- CLEAN_SESION: If True, the broker will remove all information about this client when it disconnects. If False, the client is a durable client and subscription information and queued messages will be retained when the client disconnects.
+- USER_DATA: user defined data of any type that is passed as the userdata parameter to callbacks. It may be updated at a later point with the user_data_set() function.
+- PROTOCOL: the version of the MQTT protocol to use for this client. Can be either MQTTv31 or MQTTv311
 - PORT: the MQTT broker port
 - KEEPALIVE: the MQTT Keepalive time
 - TOPIC_SUB: MQTT topic to listen for messages that will be published 
