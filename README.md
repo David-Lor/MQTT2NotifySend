@@ -17,7 +17,7 @@ It also sends retained messages to another topic when the script starts and stop
 
 ## TODO
 
-- Options to set MQTT authentication
+- Update this README.md with the new options included
 - Options to set notification priority/level
 - More options to customize notification icon
 
