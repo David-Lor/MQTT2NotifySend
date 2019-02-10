@@ -19,6 +19,7 @@ CLIENT_NAME = "your_computer_name"
 # {client_name} is replaced by the CLIENT_NAME variable
 TOPIC_SUB = "dev/{client_name}/toast"
 TOPIC_STAT = "dev/{client_name}/stat"
+RETAIN_STAT = True
 
 # The delimiter is used on incoming MQTT messages to split the notification title and text.
 # If no delimiter is provided, notification will show DEFAULT_TITLE as the title
@@ -45,7 +46,7 @@ ICON = os.path.join(CURRENT_DIR, "icon.png")
 
 def on_connect(mqtt_client: mqtt.Client, userdata, flags, rc):
     mqtt_client.subscribe(TOPIC_SUB.format(client_name=CLIENT_NAME))
-    mqtt_client.publish(TOPIC_STAT.format(client_name=CLIENT_NAME), PAYLOAD_ON, retain=True)
+    mqtt_client.publish(TOPIC_STAT.format(client_name=CLIENT_NAME), PAYLOAD_ON, retain=RETAIN_STAT)
     if USERNAME is not None and PASSWORD is not None:
         mqttClient.username_pw_set(USERNAME, PASSWORD)
 
@@ -63,7 +64,7 @@ def on_message(mqtt_client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
 mqttClient = mqtt.Client(CLIENT_NAME, CLEAN_SESSION, USER_DATA, PROTOCOL)
 mqttClient.on_connect = on_connect
 mqttClient.on_message = on_message
-mqttClient.will_set(TOPIC_STAT.format(client_name=CLIENT_NAME), PAYLOAD_OFF, retain=True)
+mqttClient.will_set(TOPIC_STAT.format(client_name=CLIENT_NAME), PAYLOAD_OFF, retain=RETAIN_STAT)
 mqttClient.connect(BROKER, PORT, KEEPALIVE)
 
 if __name__ == "__main__":
