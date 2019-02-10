@@ -44,13 +44,15 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 ICON = os.path.join(CURRENT_DIR, "icon.png")
 
 
+# noinspection PyUnusedLocal
 def on_connect(mqtt_client: mqtt.Client, userdata, flags, rc):
     mqtt_client.subscribe(TOPIC_SUB.format(client_name=CLIENT_NAME))
     mqtt_client.publish(TOPIC_STAT.format(client_name=CLIENT_NAME), PAYLOAD_ON, retain=RETAIN_STAT)
-    if USERNAME is not None and PASSWORD is not None:
+    if USERNAME and PASSWORD:
         mqttClient.username_pw_set(USERNAME, PASSWORD)
 
 
+# noinspection PyUnusedLocal
 def on_message(mqtt_client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
     payload = msg.payload.decode()
     if DELIMITER in payload:
