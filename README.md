@@ -32,7 +32,7 @@ It also sends retained messages to another topic when the script starts and stop
 All options are available as variables on the Python script:
 
 - BROKER: the MQTT broker host
-- CLIENT NAME: the Client name (must be unique) on the broker
+- CLIENT NAME: the Client name on the broker (must be unique)
 - USERNAME: username for broker authentication
 - PASSWORD: password for broker authentication
 - CLEAN_SESION: If True, the broker will remove all information about this client when it disconnects. If False, the client is a durable client and subscription information and queued messages will be retained when the client disconnects.
