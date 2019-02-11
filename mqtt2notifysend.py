@@ -15,7 +15,7 @@ BROKER = "127.0.0.1"
 PORT = 1883
 
 # The CLIENT_NAME must be unique on the broker.
-CLIENT_NAME = "your_computer_name"
+CLIENT_NAME = "pc"
 
 # Topics where to listen and publish messages
 # TOPIC_SUB is where the script will listen to messages, showing them as notifications on the desktop
