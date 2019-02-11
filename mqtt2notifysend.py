@@ -4,6 +4,11 @@ import os
 import subprocess
 import paho.mqtt.client as mqtt
 
+__version__ = "0.1"
+__license__ = "Apache 2.0"
+__maintainer__ = "David Pythoneiro (https://github.com/Pythoneiro)"
+__status__ = "Production"
+
 BROKER = "192.168.0.90"
 TOPIC_SUB = "dev/pc/toast"
 TOPIC_STAT = "dev/pc/stat"
