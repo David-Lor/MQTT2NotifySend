@@ -4,6 +4,10 @@ import os
 import subprocess
 import paho.mqtt.client as mqtt
 
+__version__ = "0.2"
+__license__ = "Apache 2.0"
+__maintainer__ = "David Pythoneiro (https://github.com/Pythoneiro)"
+__status__ = "Development"
 
 # BROKER must be the IP/Host where the MQTT Broker is running
 # Default MQTT port is 1883 (8883 for SSL/TLS enabled broker)
