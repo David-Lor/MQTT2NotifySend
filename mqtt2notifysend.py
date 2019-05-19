@@ -4,9 +4,9 @@ import os
 import subprocess
 import paho.mqtt.client as mqtt
 
-__version__ = "0.2"
+__version__ = "0.2.1"
 __license__ = "Apache 2.0"
-__maintainer__ = "David Pythoneiro (https://github.com/Pythoneiro)"
+__maintainer__ = "David Lorenzo (https://github.com/David-Lor)"
 __status__ = "Production"
 
 # BROKER must be the IP/Host where the MQTT Broker is running
@@ -20,7 +20,7 @@ CLIENT_NAME = "pc"
 # Topics where to listen and publish messages
 # TOPIC_SUB is where the script will listen to messages, showing them as notifications on the desktop
 # TOPIC_STAT is where the script will publish the computer ON/OFF status
-# {client_name} placeholder will get replaced by the CLIENT_NAME variable, but you can safely remove the placeholder
+# {client_name} placeholder will be replaced by the CLIENT_NAME variable, but you can safely remove the placeholder
 # If TOPIC_STAT is empty or None, no STAT messages will be published
 TOPIC_SUB = "dev/{client_name}/toast"
 TOPIC_STAT = "dev/{client_name}/stat"
@@ -31,7 +31,7 @@ RETAIN_STAT = True
 DELIMITER = ";;;"
 DEFAULT_TITLE = "MQTT"
 
-# Payloads are the message text to be sent through the TOPIC_STAT topic
+# Payloads are the messages texts to be sent through the TOPIC_STAT topic, sending the status of this MQTT client
 PAYLOAD_ON = "Online"
 PAYLOAD_OFF = "Offline"
 
@@ -80,5 +80,5 @@ mqttClient.connect(BROKER, PORT, KEEPALIVE)
 if __name__ == "__main__":
     try:
         mqttClient.loop_forever()
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, InterruptedError):
         mqttClient.loop_stop()
