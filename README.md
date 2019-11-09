@@ -1,69 +1,85 @@
 # MQTT2NotifySend
 
-🌉Bridge between MQTT and 🖥️Freedesktop.org Notify-Send desktop notifications (Ubuntu &amp; other distros)🐧, to send notifications to your desktop over MQTT.
-
-## Objective
-
-This Python script will subscribe to a MQTT topic and show any incoming message as a popup message on most common Linux desktops, compatible with the NotifySend framework from Freedesktop.org (using the `notify-send` command).
-
-It also sends retained messages to another topic when the script starts and stops, so the computer ON/OFF status is sent over MQTT.
+🌉Bridge between MQTT and 🖥️Freedesktop.org Notify-Send desktop notifications (Ubuntu & other distros)🐧, to send notifications to your desktop over MQTT.
 
 ## Requirements
 
 - A Linux distro with a desktop compatible with Freedesktop's NotifySend framework (run `notify-send` on your terminal to check it)
-- Python 3.x (tested on 3.7, should work with any modern Python 3)
+- Python 3.x (tested on Python 3.7)
 - A working MQTT broker
-- [paho-mqtt](https://pypi.org/project/paho-mqtt/)
+- Requirements listed on [requirements.txt](requirements.txt)
 
-## TODO
+## Getting started
 
+### Installing
+
+For now the app is not provided through pypi, so clone with git or download manually:
+
+```bash
+# Ensure you have a recent compatible version of Python installed, or use a virtual env
+git clone https://github.com/David-Lor/MQTT2NotifySend.git
+pip install -r MQTT2NotifySend/requirements.txt
+python MQTT2NotifySend
+```
+
+### Sending notifications!
+
+Just publish a MQTT message to the topic `mqtt2notifysend/cmd`. The payload can be one of the following:
+
+- A JSON string like this (title is optional):
+  ```json
+  {"title": "My first notification", "payload": "Hello world!"}
+  ```
+- A string delimited with `;;;`:
+  ```
+  My first notification;;;Hello world!
+  ```
+- A simple string (title cannot be defined):
+  ```
+  Hello world!
+  ```
+
+## TODO/Roadmap
+
+- Add CLI interface with [Fire](https://github.com/google/python-fire) or [Click](https://github.com/pallets/click)
+- Publish to pypi
 - Options to set notification priority/level
-- More options to customize notification icon
-- Possibility to send JSON strings over MQTT
+- Options to set/customize the notification icon
+- Options to set username/password for MQTT connection
+- Add tests
 
-## How to start?
+## Changelog
 
-1. Make sure to have the MQTT broker working properly
-2. Change the required settings on the script (at least the BROKER HOST if it is not running on your computer)
-3. Send a MQTT message to `dev/pc/toast` (or your own TOPIC_SUB if you changed it) - it should be published on your computer!
+- 0.1.0 - Initial new version from scratch (functional)
+- _0.2 - (Deprecated) improvements (branch [enhancement](https://github.com/David-Lor/MQTT2NotifySend/tree/enhancement))_
+- _0.1 - (Deprecated) Initial version (branch [master](https://github.com/David-Lor/MQTT2NotifySend/tree/master))_
 
-## Available options
+## Settings
 
-All options are available as variables on the Python script:
+For now, settings must be provided through environment variables or a .env file on the project root (alongside `__main__.py`)
 
-- **BROKER**: the MQTT broker host
-- **PORT**: the MQTT broker port (1883 by default on vanilla brokers, 8883 by default on SSL/TLS enabled brokers)
-- **CLIENT_NAME**: the Client name on the broker (must be unique on the broker)
-- **TOPIC_SUB**: MQTT topic to listen for messages that will be published 
-- **TOPIC_STAT**: MQTT topic to send computer ON/OFF status. If empty or set to None, no STAT messages will be published. The placeholder `{client_name}` can be used to replace with the CLIENT_NAME
-- **PAYLOAD_ON**: payload sent over TOPIC_STAT when the script stats
-- **PAYLOAD_OFF**: payload sent over TOPIC_STAT when the script ends
-- **DELIMITER**: delimiter on the payload (MQTT message) to split the notification title and message
-- **DEFAULT_TITLE**: notification title when no title is provided
-- **USERNAME**: username for broker authentication (if empty or set to None, no authentication will be used)
-- **PASSWORD**: password for broker authentication
-- **CLEAN_SESION**: If True, the broker will remove all information about this client when it disconnects. If False, the client is a durable client and subscription information and queued messages will be retained when the client disconnects.
-- **USER_DATA**: user defined data of any type that is passed as the userdata parameter to callbacks. It may be updated at a later point with the user_data_set() function.
-- **PROTOCOL**: the version of the MQTT protocol to use for this client. Can be either mqtt.MQTTv31 or mqtt.MQTTv311
-- **KEEPALIVE**: the MQTT Keepalive time
-
-
-## Customizing the notifications
-
-You can send the payloads (messages) over MQTT with just text, or a title and the text of the notification.
-
-- For text only: send the message text as the payload. The notification will use the DEFAULT_TITLE as title
-- For title and text: send the title and the message with the DELIMITER in between. In example, if the delimiter is `;;;`, send:
-`My Notification Title;;;The door was opened!`
-Important: dollar symbols `$` and maybe other special characters might not be available to send over MQTT. The proposed example works fine.
-
-The notifications can show an icon. The script will always look for a image called `icon.png` at the same level (location) as the Python script. If this file does not exist, no icon will be shown.
-
-## Auto-start
-
-Depending on your distro and desktop, they can be different ways to add this script at startup. Remember that it does not require special permissions, just the required Python version and library installed.
-
-For example, using Ubuntu, you can add the script graphically to startup on user login, using the native Startup Applications tool. You need to:
-1. Change the script header (`#!/usr/bin/python3`) to the location of your Python version (when using the Python on the system, you probably don't need to change this; but when using a virtualenv, you must put the absolute path to the Python bin of that virtualenv).
-2. Give the .py script execution permissions (`chmod +x mqtt2notifysend.py` or do it graphically).
-3. Add the absolute route to the script when creating a new entry on the Startup Applications tool.
+- **Main settings**:
+    - **MQTT2NOTIFY_BROKER**: MQTT broker host (default: `127.0.0.1`)
+    - **MQTT2NOTIFY_PORT**: MQTT broker port (default: `1883`)
+    - **MQTT2NOTIFY_TOPIC**: MQTT topic where listen for messages that will be converted to desktop notifications (default: `mqtt2notifysend/cmd`)
+    - **MQTT2NOTIFY_DEFAULT_TITLE**: default title for notifications when no title provided on the MQTT message (default: `MQTT2NotifySend`)
+- **Additional settings**:
+    - **MQTT2NOTIFY_KEEPALIVE**: MQTT keepalive time (default: `60`)
+    - **MQTT2NOTIFY_CLIENT_ID**: MQTT client id (default: `mqtt2notifysend_{uuid1}`, being `{uuid1}` generated with `uuid.uuid1()`)
+    - **MQTT2NOTIFY_QOS_SUB**: MQTT QoS for the `MQTT2NOTIFY_TOPIC` (default: `0`)
+    - **MQTT2NOTIFY_TOPIC_STAT**: MQTT topic where the Stat messages (app Online/Offline) are published (optional, if not set, won't publish stat messages)
+    - **MQTT2NOTIFY_SET_LWT**: `true`/`false`; if `true`, set Last Will message on Topic stat (default: `false`; ignored if no topic stat set)
+    - **MQTT2NOTIFY_STAT_RETAIN**: `true`/`false`; if `true`, publish Stat messages with the Retain flag (default: `true`; ignored if no topic stat set)
+    - **MQTT2NOTIFY_PAYLOAD_ONLINE**: payload to publish on stat topic when the app connects to MQTT (default: `Online`; ignored if no topic stat set)
+    - **MQTT2NOTIFY_PAYLOAD_ONLINE**: payload to publish on stat topic as the Last Will message (default: `Offline`; ignored if no topic stat set)
+- **Payload settings** define how the app will parse the payloads received, having 3 parsers:
+    - **JSON parser** (payload is send as a JSON string):
+        - **MQTT2NOTIFY_JSON_PAYLOAD**: `true`/`false`; if `true`, expect JSON payloads (default: `true`)
+        - **MQTT2NOTIFY_JSON_TITLE_KEY**: key of the title field on the JSON (default: `title`)
+        - **MQTT2NOTIFY_JSON_TEXT_KEY**: key of the text field on the JSON (default: `text`)
+    - **Delimited parser** (payload is send as a string with the title and payload split by a delimiter):
+        - **MQTT2NOTIFY_DELIMITED_PAYLOAD**: `true`/`false`; if `true`, expect delimited payloads (default: `true`)
+        - **MQTT2NOTIFY_DELIMITER**: delimiter character/s (default: `;;;`)
+    - **Raw payload** (the payload received is printed as the text notification - title cannot be set):
+        - **MQTT2NOTIFY_RAW_PAYLOAD**: `true`/`false`; if `true`, expect raw payloads (default: `true`)
+    - If more than one parser is enabled, their priority will be: JSON, Delimited, Raw (if one fails, the next is used)

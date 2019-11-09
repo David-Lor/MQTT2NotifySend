@@ -1,1 +1,3 @@
 paho-mqtt
+python-dotenv
+dotenv-settings-handler

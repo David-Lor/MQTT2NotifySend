@@ -1,0 +1,9 @@
+# run: conda env create --file environment.yml
+
+name: MQTT2NotifySend
+dependencies:
+  - python>=3.6
+  - pip
+  - pip:
+      - -r ../requirements.txt
+      - -r ../tests/requirements.txt
