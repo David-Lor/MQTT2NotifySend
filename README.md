@@ -9,7 +9,7 @@
 sudo apt install mosquitto-clients jq
 
 # Download the script & set as executable (optional)
-curl -O https://raw.githubusercontent.com/David-Lor/MQTT2NotifySend/mqtt2notifysend.sh
+curl -O https://raw.githubusercontent.com/David-Lor/MQTT2NotifySend/master/mqtt2notifysend.sh
 chmod u+x mqtt2notifysend.sh
 
 # Run!
