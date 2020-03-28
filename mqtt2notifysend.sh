@@ -16,7 +16,7 @@ fi
 RECONNECTION_DELAY=${RECONNECTION_DELAY:=5}
 DEFAULT_TITLE=${DEFAULT_TITLE:="MQTT2NotifySend"}
 DEFAULT_LEVEL=${DEFAULT_LEVEL:="normal"}
-LOG_ENABLE={$LOG_ENABLE:="true"}
+LOG_ENABLE=${LOG_ENABLE:="false"}
 
 log_counter=0
 
@@ -30,9 +30,9 @@ function log() {
 while true
 do
     # TODO Identify when mosquitto_sub fails due to connection error or user input (args) error
-    mosquitto_sub $@ | while read -r payload
+    mosquitto_sub "$@" | while read -r payload
     do
-        log_counter=$(( $log_counter + 1))
+        log_counter=$(( log_counter + 1))
 
         log "Received message with payload=\"${payload}\""
         title=$(echo "${payload}" | jq -r ".title")
