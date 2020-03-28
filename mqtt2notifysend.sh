@@ -21,8 +21,10 @@ LOG_ENABLE={$LOG_ENABLE:="true"}
 log_counter=0
 
 function log() {
-    # TODO print if LOG_ENABLE enabled
-    echo "[#$log_counter] $1"
+    if [[ "${LOG_ENABLE}" == "true" || "${LOG_ENABLE}" == "1" ]]
+    then
+        echo "[#$log_counter] $1"
+    fi
 }
 
 while true
