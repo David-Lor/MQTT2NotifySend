@@ -5,8 +5,8 @@
 ## Getting started
 
 ```bash
-# Dependencies are: mosquitto-clients, jq
-sudo apt install mosquitto-clients jq
+# Dependencies are: libnotify-bin, mosquitto-clients, jq, coreutils
+sudo apt install libnotify-bin mosquitto-clients jq coreutils
 
 # Download the script & set as executable (optional)
 curl -O https://raw.githubusercontent.com/David-Lor/MQTT2NotifySend/master/mqtt2notifysend.sh
@@ -54,3 +54,4 @@ LOG_ENABLE=true RECONNECTION_DELAY=1 DEFAULT_TITLE="Very important notification"
 - Support non-JSON payloads (only text and title-text split by delimiter)
 - Describe environment variable arguments on README
 - Identify when mosquitto_sub fails due to connection error or user input (args) error
+- Validate dependencies installed before connecting
